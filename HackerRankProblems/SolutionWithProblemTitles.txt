@@ -11,3 +11,8 @@ SELECT CONCAT(STR(SUM(LAT_N),10,2), " ", STR(SUM(LONG_W),10,2)) FROM STATION;
 SQL > Aggregation > Weather Observation Station 13
 
 SELECT STR(SUM(LAT_N),10,4) FROM STATION WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
+
+
+SQL > Aggregation > Weather Observation Station 14
+
+SELECT STR(MAX(LAT_N),10,4) FROM STATION WHERE LAT_N < 137.2345;
