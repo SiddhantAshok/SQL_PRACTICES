@@ -1,43 +1,52 @@
-SQL > Aggregation > TopEarners
+> SQL > Aggregation > TopEarners
 
 SELECT TOP 1 CONCAT(MONTHS * SALARY, " ", COUNT(EMPLOYEE_ID)) FROM EMPLOYEE GROUP BY MONTHS * SALARY ORDER BY MONTHS * SALARY DESC;
 
 
-SQL > Aggregation > Weather Observation Station 2
+> SQL > Aggregation > Weather Observation Station 2
 
 SELECT CONCAT(STR(SUM(LAT_N),10,2), " ", STR(SUM(LONG_W),10,2)) FROM STATION;
 
 
-SQL > Aggregation > Weather Observation Station 13
+> SQL > Aggregation > Weather Observation Station 13
 
 SELECT STR(SUM(LAT_N),10,4) FROM STATION WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
 
 
-SQL > Aggregation > Weather Observation Station 14
+> SQL > Aggregation > Weather Observation Station 14
 
 SELECT STR(MAX(LAT_N),10,4) FROM STATION WHERE LAT_N < 137.2345;
 
 
-SQL > Aggregation > Weather Observation Station 15
+> SQL > Aggregation > Weather Observation Station 15
 
 SELECT TOP 1 STR(LONG_W,10,4) FROM STATION WHERE LAT_N < 137.2345 ORDER BY LAT_N DESC;
 
 
-SQL > Aggregation > Weather Observation Station 16
+> SQL > Aggregation > Weather Observation Station 16
 
 SELECT TOP 1 STR(LAT_N,10,4) FROM STATION WHERE LAT_N > 38.7780 ORDER BY LAT_N ASC;
 
 
-SQL > Aggregation > Weather Observation Station 17
+> SQL > Aggregation > Weather Observation Station 17
 
 SELECT TOP 1 STR(LONG_W,10,4) FROM STATION WHERE LAT_N > 38.7780 ORDER BY LAT_N ASC;
 
 
-SQL > Aggregation > Weather Observation Station 18
+> SQL > Aggregation > Weather Observation Station 18
 
 SELECT STR(ABS(MAX(LAT_N) - MIN(LAT_N)) + ABS(MAX(LONG_W) - MIN(LONG_W)),10,4) FROM STATION;
 
 
-SQL > Aggregation > Weather Observation Station 18
+> SQL > Aggregation > Weather Observation Station 19
 
 SELECT STR(SQRT(SQUARE(ABS(MAX(LAT_N)-MIN(LAT_N))) + SQUARE(ABS(MAX(LONG_W) - MIN(LONG_W)))),10,4) FROM STATION;
+
+
+> SQL > Aggregation > Weather Observation Station 20
+
+SELECT TOP 1 STR(LAT_N,10,4) FROM (SELECT TOP 50 PERCENT * FROM STATION ORDER BY LAT_N ASC) AS D ORDER BY LAT_N DESC;
+
+SELECT STR(S.LAT_N,10,4) FROM STATION AS S WHERE 
+(SELECT COUNT(LAT_N) FROM STATION WHERE LAT_N<S.LAT_N)=
+(SELECT COUNT(LAT_N) FROM STATION WHERE LAT_N>S.LAT_N);
