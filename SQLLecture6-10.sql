@@ -105,3 +105,17 @@ select IDENT_CURRENT('test1')
 
 
 ---LECTURE 9 : UNIQUE KEY CONTRAINT ---
+
+delete from tblEmp1
+select * from tblEmp1
+Alter table tblEmp1
+add email varchar(50)
+
+Alter table tblEmp1
+add constraint Unique_tblEmp1_email
+UNIQUE (email)
+
+
+Insert into tblEmp1	(Name, email) values('John', 'john@com')
+Insert into tblEmp1	(Name, email) values('Johny', 'johny@com')
+Insert into tblEmp1	(Name, email) values('Tom', 'tom@com')
