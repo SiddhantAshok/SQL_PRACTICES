@@ -62,3 +62,46 @@ select * from tblEmp1
 
 --On deleting all the rows/tuple from the table and you want to reset the identity value we can use DBCC command
 DBCC CHECKIDENT('tblEmp1',RESEED,100)
+
+
+---LECTURE 8 : LAST GENERATED IDENTITY COLUMN ---
+Create table test1
+(
+	ID int Identity(100,1),
+	Value nvarchar(20)
+)
+
+Create table test2
+(
+	ID int Identity(100,1),
+	Value nvarchar(20)
+)
+
+insert into Test1 values('x')
+
+select * from Test1
+select * from test2
+
+-- Get the last generated Idenetity column value using SCOPE_IDENTITY---
+select SCOPE_IDENTITY()
+
+select @@IDENTITY
+
+-- Create trigger on table (on particular action which fires a trigger assigned action gets performed automatically)
+Create Trigger TR_ForInsert on Test1 for Insert
+As
+Begin
+	Insert into Test2 Values('YYYY')
+End
+
+
+insert into Test1 values('y')
+
+select SCOPE_IDENTITY()
+
+select @@IDENTITY
+
+select IDENT_CURRENT('test1')
+
+
+---LECTURE 9 : UNIQUE KEY CONTRAINT ---
