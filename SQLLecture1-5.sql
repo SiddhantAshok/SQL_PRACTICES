@@ -19,5 +19,5 @@ Execute sp_help 'RESULT_EXAMINATION'	-- System SP to get information about the p
 
 
 --Drop/Delete the database
-Alter Database Sample2 Set Single_User With Rollback Immediate --Normally DB's are in Multi_User mode. So to delete/drop a Db first put Db in Single_User mode
+Alter Database Sample2 Set Single_User With Rollback Immediate --Normally DB's are in Multi_User mode. So to delete/drop a Db first put Db in Single_User mode and roll back all current active session/transactions for that DB
 Drop Database Sample2
