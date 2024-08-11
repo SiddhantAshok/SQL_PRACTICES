@@ -119,3 +119,97 @@ UNIQUE (email)
 Insert into tblEmp1	(Name, email) values('John', 'john@com')
 Insert into tblEmp1	(Name, email) values('Johny', 'johny@com')
 Insert into tblEmp1	(Name, email) values('Tom', 'tom@com')
+
+---LECTURE 10 : SELECT STATEMENT ---
+SELECT [ID]
+      ,[Name]
+      ,[Email]
+      ,[GenderId]
+      ,[Age]
+  FROM [SampleDB].[dbo].[tblPerson]
+
+GO
+
+select * from SampleDB.dbo.tblPerson
+
+delete from SampleDB.dbo.tblPerson
+
+Alter table SampleDB.dbo.tblPerson
+add City varchar(50) not null
+
+Insert into  SampleDB.dbo.tblPerson (ID, Name, Email, GenderId, Age, City) Values (1, 'sam', 'sam@com', 1, 25, 'NY')
+
+Drop table SampleDB.dbo.tblPerson
+
+Use SampleDB 
+Go
+Create table tblPerson(
+	ID int Primary key Identity(100, 1),
+	[Name] varchar(50) not null,
+	Email varchar(100) Unique not null,
+	GenderId int Default 3,
+	Age int Check (Age > 0 and Age < 150),
+	City varchar(50) not null,
+	Foreign key (GenderId) references tblGender(ID)
+)
+
+Select * from tblPerson
+
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('sam', 'sam@com', 1, 25, 'NY')
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('samual', 'samual@com', 1, 27, 'Canada')
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('joey', 'joey@com', 1, 35, 'NY')
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('tobey', 'tobey@com', 1, 15, 'Australia')
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('sara', 'sara@com', 2, 27, 'Russia')
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('zara', 'z@z', 2, 29, 'Srilanka')
+Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('kiara', 'kiara@com', 2, 17, 'Russia')
+--Insert into  SampleDB.dbo.tblPerson ( Name, Email, GenderId, Age, City) Values ('ketty', 'ketty@com', 2, 170, 'Russia')
+
+--below distinct is giving distinct values of City column
+select Distinct City from tblPerson
+--below distinct is giving distinct values combined City and Name column
+select Distinct City, Name from tblPerson
+
+--filter using where clause
+select * from tblPerson where city = 'NY'
+select * from tblPerson where city != 'NY' --or--
+select * from tblPerson where city <> 'NY'
+
+
+select * from tblPerson where Age = 25 or Age = 15 or Age = 35
+--IN operator , in replacement of above query
+select * from tblPerson where Age in (25, 15, 35)
+
+select * from tblPerson where Age > 20 and Age < 30
+--Between Operator, in replacement of above query
+select * from tblPerson where Age Between 20 And 30 -- boundary conditions are inculsive
+
+--Like operator
+-- % wildcard
+select * from tblPerson where City Like 'N%'	--Starting With N
+select * from tblPerson where City Like '%Y'	--Ending With Y
+select * from tblPerson where Email not Like 'sam%'  --Not Starting with sam
+
+--Several wildcards we can use with like operator '%' '_' '[]' '[^]'
+select * from tblPerson where Email Like '_@_'		-- _ is a single charater replacement, the query means there can be one charater before and one char after @.
+
+--	 %		: Specifies zero or more characters
+--	 _		: Specifies exactly one character
+--	 []		: Any character with in the brackets
+--	 [^]	: Not any character with in the brackets
+
+select * from tblPerson where Name Like '[Zjt]%' and City Like 'N%'
+select * from tblPerson where Name Like '[^Zjt]%'
+
+select * from tblPerson where (City = 'Russia' or City = 'Canada') and Age > 20
+select * from tblPerson where City In ('Russia' , 'Canada') and Age > 20
+select * from tblPerson where City In ('Russia' , 'Canada') and Age < 20
+
+
+--Sorted Rows
+select * from tblPerson order by age
+select top 2 * from tblPerson order by Name, age desc
+select top 2 * from tblPerson order by age desc, Name
+
+select top 50 Percent * from tblPerson order by age desc, Name
+
+select top 1 * from tblPerson order by age desc
