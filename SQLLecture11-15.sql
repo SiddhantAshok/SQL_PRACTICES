@@ -125,3 +125,26 @@ Select [Name], Gender, Salary, DepartmentName from tblEmployee as E full outer j
 Select [Name], Gender, Salary, DepartmentName from tblEmployee as E full outer join tblDepartment as D on E.DepartmentId = D.Id where E.DepartmentId Is Null
 
 --Important : to compare any value with NULL always use IS operator, you cannot use = operator when comparing to NULL
+
+
+--LECTURE 14 : SELF JOIN ---
+Create table tblEmployeeManager
+(
+	EmployeeID int primary key Identity(1,1),
+	[Name] varchar(50) not null,
+	ManagerID int
+)
+
+Insert into tblEmployeeManager values ('Mike',3)
+Insert into tblEmployeeManager values ('Robb',1)
+Insert into tblEmployeeManager values ('Todd',NULL)
+Insert into tblEmployeeManager values ('Ben',1)
+Insert into tblEmployeeManager values ('Sam',1)
+
+Select * from tblEmployeeManager
+
+Select L.Name as Employee, R.Name as Manager from tblEmployeeManager as L left join tblEmployeeManager as R on L.ManagerID = R.EmployeeID
+
+--Inner self Join
+--Left outer self Join, RIght Outer Self Join, Full Outer Self Join
+--Cross Self Join
