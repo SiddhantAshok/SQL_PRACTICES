@@ -95,5 +95,33 @@ Select Name, Gender, Salary, DepartmentName from tblEmployee cross join tblDepar
 --JoinType RightTable
 --ON JoinCondition
 
+---LECTURE 13 : ADVANCE or INTELLIGENT JOINS ---
 
 
+--Insert into tblEmployee values('Tom', 'Male', 4000, 'London', 1)
+--Insert into tblEmployee values('Pam', 'Female', 3000, 'New York',3)
+--Insert into tblEmployee values('John', 'Male', 4500, 'London' , 1 )
+--Insert into tblEmployee values('Sam', 'Male', 4500, 'London',2)
+--Insert into tblEmployee values('Todd', 'Male', 2800, 'Sydney',2)
+--Insert into tblEmployee values('Ben', 'Male', 7000, 'New York', 1)
+--Insert into tblEmployee values('Sara', 'Female', 4800, 'Sydney',3)
+--Insert into tblEmployee values('Valarie', 'Female', 5500, 'New York', 1)
+--Insert into tblEmployee values('James', 'Male', 6500, 'London', NULL)
+--Insert into tblEmployee values('Russel', 'Male', 8800, 'London', NULL)
+
+--below query will give the wider view of latter queries filter conditions
+Select tblEmployee.ID, tblDepartment.Id, Name, Gender, Salary, DepartmentName, tblEmployee.DepartmentId from tblEmployee Full outer join tblDepartment on tblEmployee.DepartmentId = tblDepartment.Id
+
+Select [Name], Gender, Salary, DepartmentName from tblEmployee as E left join tblDepartment as D on E.DepartmentId = D.Id where D.Id IS NULL
+--or
+Select [Name], Gender, Salary, DepartmentName from tblEmployee as E left join tblDepartment as D on E.DepartmentId = D.Id where E.DepartmentId IS NULL
+
+Select [Name], Gender, Salary, DepartmentName from tblEmployee as E right join tblDepartment as D on E.DepartmentId = D.Id where E.ID IS NULL
+--or
+Select [Name], Gender, Salary, DepartmentName from tblEmployee as E right join tblDepartment as D on E.DepartmentId = D.Id where E.DepartmentId IS NULL
+
+Select [Name], Gender, Salary, DepartmentName from tblEmployee as E full outer join tblDepartment as D on E.DepartmentId = D.Id where E.ID Is Null or D.Id Is Null
+--or
+Select [Name], Gender, Salary, DepartmentName from tblEmployee as E full outer join tblDepartment as D on E.DepartmentId = D.Id where E.DepartmentId Is Null
+
+--Important : to compare any value with NULL always use IS operator, you cannot use = operator when comparing to NULL
