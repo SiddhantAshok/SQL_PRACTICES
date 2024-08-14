@@ -180,4 +180,3 @@ Select E.Name as Employee, CASE WHEN M.Name IS NULL THEN 'No Manager' ELSE M.Nam
 from tblEmployeeManager as E 
 left join tblEmployeeManager as M 
 on E.ManagerID = M.EmployeeID
-
