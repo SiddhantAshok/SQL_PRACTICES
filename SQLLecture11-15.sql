@@ -148,3 +148,36 @@ Select L.Name as Employee, R.Name as Manager from tblEmployeeManager as L left j
 --Inner self Join
 --Left outer self Join, RIght Outer Self Join, Full Outer Self Join
 --Cross Self Join
+
+
+---LECTURE 15 : REPLACE NULL ---
+Select * from tblEmployeeManager
+
+Select ISNULL(NULL, 'No Manager') as Manager
+Select ISNULL('PRAGIM', 'No Manager') as Manager
+
+Select COALESCE(NULL, 'No Manager') as Manger
+Select COALESCE('Pragim', 'No Manager') as Manger
+
+
+--CASE WHEN expression THEN '' ELSE '' END
+
+--1. Replace null using ISNULL function (System function)
+Select E.Name as Employee, ISNULL(M.Name, 'No Manager') as Manager
+from tblEmployeeManager as E 
+left join tblEmployeeManager as M 
+on E.ManagerID = M.EmployeeID
+
+--2. Replace null using Coalace function
+Select E.Name as Employee, COALESCE(M.Name, 'No Manager') as Manager
+from tblEmployeeManager as E 
+left join tblEmployeeManager as M 
+on E.ManagerID = M.EmployeeID
+
+
+--3. Replace null using Case statement
+Select E.Name as Employee, CASE WHEN M.Name IS NULL THEN 'No Manager' ELSE M.Name END as Manager
+from tblEmployeeManager as E 
+left join tblEmployeeManager as M 
+on E.ManagerID = M.EmployeeID
+
