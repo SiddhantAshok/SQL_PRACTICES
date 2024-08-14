@@ -141,7 +141,7 @@ Insert into tblEmployeeManager values ('Todd',NULL)
 Insert into tblEmployeeManager values ('Ben',1)
 Insert into tblEmployeeManager values ('Sam',1)
 
-Select * from tblEmployeeManager
+Select * from tblEmployeeManager --where ManagerID Is NULL
 
 Select L.Name as Employee, R.Name as Manager from tblEmployeeManager as L left join tblEmployeeManager as R on L.ManagerID = R.EmployeeID
 
