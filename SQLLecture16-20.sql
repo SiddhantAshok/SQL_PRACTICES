@@ -176,3 +176,59 @@ sp_helptext sp_help
 --	sp_depends : view the dependencies of the SP's, tables or other objects
 sp_depends tblEmployee
 sp_depends spGetEmployeesCountByGender
+
+
+---LECTURE 20 : SP's OUTPUT PARAMETERS or RETURN values ---
+
+--SP to get Total Employee Count via output paramter
+Create Procedure spGetTotalCount_tblEmployee
+@EmployeeCount int output
+As
+Begin
+	Select @EmployeeCount = Count(Id) from tblEmployee
+End
+
+Declare @Count int
+Execute spGetTotalCount_tblEmployee @Count Output
+Print Concat(@Count , ' employees')
+
+--SP to get total employee count via return type
+Create Procedure spGetTotalCount_tblEmployee1
+As
+Begin
+	return (Select Count(*) from tblEmployee)
+End
+
+Declare @ECount int
+Execute @ECount = spGetTotalCount_tblEmployee1
+Print @ECount
+
+
+
+--SP to get the name of the employee by Id via output parameter
+Create Procedure spGetNameById
+@Id int,
+@Name nvarchar(50) output
+As
+Begin
+	Select @Name = Name from tblEmployee where Id = @Id
+End
+
+Declare @Name nvarchar(20)
+Execute spGetNameById 100, @Name output
+Print Concat(@Name, ' is name of employee')
+
+--SP to get name of the employee by id via return type [this throws an error cause return type can only be int value]
+Create Procedure spGetNameById_tblEmployee
+@Id int
+As
+Begin
+	return (Select Name from tblEmployee where ID = @Id)
+End
+
+Declare @EmpName varchar(20)
+Execute @EmpName = spGetNameById_tblEmployee 100
+Print @EmpName
+
+--Return type : 1. Only Integer datatype, 2. Only 1 Value, 3. Use to convery success or failure
+--Output parameters : 1. Any Datatype, 2. More than 1 value, 3. Use to return values like name, count etc
