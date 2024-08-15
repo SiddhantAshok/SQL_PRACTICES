@@ -129,3 +129,50 @@ End
 
 -- after altering the SP and adding the encryption in above query, now you cannot see the contents of below called SP
 sp_helptext sp_GetEmployees_tblEmployee
+
+---LECTURE 19 : STORED PROCEDURES WITH OUTPUT PARAMETERS ---
+Create Procedure spGetEmployeesCountByGender
+@Gender nvarchar(20),
+@EmployeeCount int Output
+As
+Begin
+	Select @EmployeeCount = Count(*) from tblEmployee where Gender = @Gender
+End
+
+Alter Procedure spGetEmployeesCountByGender
+@Gender nvarchar(20),
+@EmployeeCount int Output
+As
+Begin
+	Select @EmployeeCount = Count(Id) from tblEmployee where Gender = @Gender
+End
+
+--Call/Execute an SP with output parameters
+Declare @EmpCount int
+Declare @EmpGender nvarchar(20) = 'Male'
+Execute spGetEmployeesCountByGender @EmpGender, @EmpCount Output
+if(@EmpCount Is Null)
+	Print '@EmpCount is null'
+else
+	Print Concat( @EmpCount, ' is employee Count')
+
+--passing the arguments without following the original parameter order
+Declare @EmployeesCount int
+Declare @EmployeesGender nvarchar(20) = 'Male'
+Execute spGetEmployeesCountByGender @EmployeeCount = @EmployeesCount Output, @Gender = @EmployeesGender
+if(@EmployeesCount Is Null)
+	Print '@EmpCount is null'
+else
+	Print Concat( @EmployeesCount, ' is employee Count')
+
+--Useful system stored procedure
+--	sp_help : to view the information of schema of database, tables, triggers, SP's etc, else you can highlight the object and press Alt + F1
+sp_help tblEmp
+
+--	sp_helptext : View the text of the stored procedure
+sp_helptext spGetEmployeesCountByGender
+sp_helptext sp_help
+
+--	sp_depends : view the dependencies of the SP's, tables or other objects
+sp_depends tblEmployee
+sp_depends spGetEmployeesCountByGender
