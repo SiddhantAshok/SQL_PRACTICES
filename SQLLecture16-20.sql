@@ -77,3 +77,55 @@ Select * from tblUKCustomers
 Order By Name
 
 --JOINS vs UNION : Inshort UNION combines rows from 2 or more table, where JOINS combine columns from 2 or more table.
+
+---LECTURE 18 : STORED PROCEDURE ---
+Select * from tblEmployee
+
+Select Name,Gender from tblEmployee
+
+--- SP without parameters
+CREATE PROCEDURE sp_GetEmployees_tblEmployee
+As
+Begin
+	Select Name, Gender from tblEmployee
+End
+
+Execute sp_GetEmployees_tblEmployee
+
+
+--- SP with parameter
+Create Procedure sp_GetEmployeesByGenderAndDepartment
+@Gender nvarchar(20),
+@DepartmentId int
+As
+Begin
+	Select Name, Gender, DepartmentId from tblEmployee where Gender = @Gender and DepartmentId = @DepartmentId
+End
+
+Execute sp_GetEmployeesByGenderAndDepartment 'Male',1
+--or	using below format of executing SP you can pass shuffeled arguments
+Execute sp_GetEmployeesByGenderAndDepartment @DepartmentId = 1, @Gender = 'Male'
+
+--use below System SP to get the definition of any User definded SP
+sp_helptext sp_GetEmployeesByGenderAndDepartment
+
+--Alter the SP
+Alter Procedure sp_GetEmployees_tblEmployee
+AS
+BEGIN
+	Select Name, Gender from tblEmployee order by Name
+END
+
+--Drop the stored procedure
+DROP PROC sp_GetEmployees_tblEmployee
+
+--to hide the contents of SP use encryption
+Alter Procedure sp_GetEmployees_tblEmployee
+With encryption
+As
+Begin
+	Select Name, Gender from tblEmployee order by name
+End
+
+-- after altering the SP and adding the encryption in above query, now you cannot see the contents of below called SP
+sp_helptext sp_GetEmployees_tblEmployee
