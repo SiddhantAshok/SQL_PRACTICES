@@ -120,3 +120,32 @@ Select [Name], Email, REPLACE(Email, '.com', '.net') as [Updated Email] from tbl
 Select [Name], Email, STUFF(Email,2,CHARINDEX('@', Email) - 2,'*****') from tblPerson
 
 
+---LECTURE 25 : DATETIME FUNCTIONS ---
+
+Create table tblDateTime
+(
+	c_time time(7),
+	c_date date,
+	c_smalldatetime smalldatetime,
+	c_datetime datetime,
+	c_datetime2 datetime2,
+	c_datetimeoffset datetimeoffset
+)
+
+select * from tblDateTime
+Select GETDATE()
+
+Insert into tblDateTime values (GETDATE(), GETDATE(), GETDATE(), GETDATE(), GETDATE(), GETDATE())
+Insert into tblDateTime values (GETDATE(), GETDATE(), GETDATE(), GETDATE(), GETDATE(), SYSDATETIMEOFFSET())
+
+update tblDateTime set c_datetimeoffset = '2024-08-16 18:59:47.0930000 +01:00' where c_datetimeoffset = '2024-08-16 18:59:44.0930000 +00:00'
+
+Select GETDATE()			-- 2024-08-16 19:09:11.823
+Select CURRENT_TIMESTAMP	-- 2024-08-16 19:09:00.767
+Select SYSDATETIME()		-- 2024-08-16 19:09:33.3297188
+Select SYSDATETIMEOFFSET()	-- 2024-08-16 19:09:45.7107194 +05:30
+Select GETUTCDATE()			-- 2024-08-16 13:39:54.417
+Select SYSUTCDATETIME()		-- 2024-08-16 13:40:03.6364545
+
+
+
