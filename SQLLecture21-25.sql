@@ -86,3 +86,37 @@ Select * from tblPerson
 
 Select SUBSTRING(Email, CHARINDEX('@', Email)+ 1, LEN(Email) - CHARINDEX('@', Email)) as EmailDomain, Count(Email) as Total from tblPerson 
 Group by SUBSTRING(Email, CHARINDEX('@', Email)+ 1, LEN(Email) - CHARINDEX('@', Email))
+
+
+---LECTURE 24 : MORE ON STRING FUNCTIONS REPLICATE(), SPACE(), PATINDEX(), REPLACE(), STUFF() etc ---
+
+--REPLICATE()
+Select REPLICATE('Siddhant ', 3)
+
+Select * from tblPerson
+
+-- Mask the email with * from charindex 3 to @
+Select [Name], CONCAT(SUBSTRING(Email, 1, 2), REPLICATE('*', CHARINDEX('@',Email) - 3), SUBSTRING(Email, CHARINDEX('@', Email), LEN(Email)  - CHARINDEX('@', Email) + 1)) from tblPerson
+
+-- Mask the email with 5 * (Star) symbols
+Select [Name], CONCAT(SUBSTRING(Email, 1, 2), REPLICATE('*', 5), SUBSTRING(Email, CHARINDEX('@', Email), LEN(Email)  - CHARINDEX('@', Email) + 1)) from tblPerson
+
+
+--SPACE()
+Select Concat([Name], '     ', Email) from tblPerson -- not very much readable
+Select Concat([Name], SPACE(5), Email) from tblPerson	-- this is more readable 
+
+--PATINDEX()
+Select [Name], Email, PATINDEX('%@aaa.com',Email) as FirstOccurance from tblPerson where PATINDEX('%@aaa.com', Email) > 0
+
+
+--REPLACE()
+Select REPLACE('Sara@aaa.com', '.com', '.net')
+
+Select [Name], Email, REPLACE(Email, '.com', '.net') as [Updated Email] from tblPerson
+
+--STUFF()
+--masking using STUFF , earlier we used REPLICATE()
+Select [Name], Email, STUFF(Email,2,CHARINDEX('@', Email) - 2,'*****') from tblPerson
+
+
