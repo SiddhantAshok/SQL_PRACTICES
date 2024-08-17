@@ -138,7 +138,7 @@ Select GETDATE()
 Insert into tblDateTime values (GETDATE(), GETDATE(), GETDATE(), GETDATE(), GETDATE(), GETDATE())
 Insert into tblDateTime values (GETDATE(), GETDATE(), GETDATE(), GETDATE(), GETDATE(), SYSDATETIMEOFFSET())
 
-update tblDateTime set c_datetimeoffset = '2024-08-16 18:59:47.0930000 +01:00' where c_datetimeoffset = '2024-08-16 18:59:44.0930000 +00:00'
+update tblDateTime set c_datetimeoffset = '2024-08-17 22:58:54.2433333 +05:00' where c_datetimeoffset = '2024-08-17 22:58:54.2433333 +00:00'
 
 Select GETDATE()			-- 2024-08-16 19:09:11.823
 Select CURRENT_TIMESTAMP	-- 2024-08-16 19:09:00.767
