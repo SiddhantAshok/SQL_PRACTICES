@@ -252,4 +252,51 @@ Select CAST(RegisteredDate as TIME) as RegistrationDate, Count(Id) as TotalRegis
 Select RegisteredDate, Count(Id) as TotalRegistration from tblRegistration group by RegisteredDate
 
 
+---LECTURE 29 : MATHEMATICAL FUNCTIONS ---
+
+Select ABS(-12.9)
+
+Select CEILING(15.2)
+Select CEILING(-15.2)
+
+Select FLOOR(15.2)
+Select FLOOR(-15.2)
+
+
+Select POWER(2,3)		--returns 8   : 1st argu is base, 2nd argu is power
+
+Select SQUARE(9)
+
+Select SQRT(81)
+
+Select RAND()
+Select RAND(1) --Always returns the same value
+
+Select RAND() * 100
+Select FLOOR(RAND() * 100)
+
+
+Declare @Counter int
+Set @Counter = 1
+WHILE(@Counter <= 10)
+Begin
+	Print Floor(RAND() * 100)
+	Set @Counter = @Counter + 1
+End
+
+
+--Round to 2 places after (to the right) the decimal point
+Select ROUND(850.556, 2) --returns 850.560
+Select ROUND(850.556, 2, 1) --returns 850.550
+
+Select ROUND(850.556, 1) --returns 850.600
+Select ROUND(850.556, 1, 1) --returns 850.500
+
+Select ROUND(850.556, -2)	--returns 900.000
+Select ROUND(850.556, -2, 1)	--returns 800.000
+
+Select ROUND(858.556, -1)	--returns 860.000
+Select ROUND(858.556, -1, 1)	--returns 850.000
+
+
 
