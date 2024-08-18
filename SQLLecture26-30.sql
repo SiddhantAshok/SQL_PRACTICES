@@ -298,5 +298,45 @@ Select ROUND(850.556, -2, 1)	--returns 800.000
 Select ROUND(858.556, -1)	--returns 860.000
 Select ROUND(858.556, -1, 1)	--returns 850.000
 
+---LECTURE 30 : SCALAR USER DEFINED FUNCTIONS ---
 
+Select SQUARE(3)	-- returns 9   : this is a scalar built-in system function
+
+--CREATE FUNCTION SYNTAX Below : 
+
+--CREATE FUNCTION FUNCTION_NAME(@Parameter DataType, @Parameter2 Datatype, ...., @ParameterN Datatype)
+--Returns Return_Datatype
+--As
+--Begin
+--	--Function Body
+--	Return Return_Datatype
+--End
+
+--SCALAR FUNCTIONS may or may not have paramters, but always return a single (scalar) value. 
+--The returned value can be of any datatype, except text, ntext, image, cursor, and timestamp
+
+
+CREATE FUNCTION fnCalculateAge(@DOB date)
+Returns int
+As
+Begin
+	Declare @Age int
+	
+	Set @Age = DATEDIFF(YEAR, @DOB, GETDATE()) -
+				CASE
+					WHEN(MONTH(@DOB) > MONTH(GETDATE())) OR
+					(MONTH(@DOB) = MONTH(GETDATE()) AND DAY(@DOB) > DAY(GETDATE()))
+					THEN 1 ELSE 0
+				END
+	RETURN @Age
+End
+
+
+Select * from tblEmployeeDateOfBirth
+
+Select [Name], DateOfBirth, dbo.fnCalculateAge(DateOfBirth) as Age, dbo.fnComputeAge(DateOfBirth) as [Full Age] from tblEmployeeDateOfBirth Where dbo.fnCalculateAge(DateOfBirth) >= 30
+
+sp_helptext fnComputeAge
+
+--A STORED PROCEDURE  also can accept DateOfBirth and return Age, but you cannot use stored procedure in a select or where clause. This is just one important difference between a function and a stored procedure. There are several other differences, which we will talk about in a later session.
 
