@@ -198,5 +198,58 @@ Begin
 End
 
 
-
 Select [Name], DateOfBirth,  dbo.fnComputeAge(DateOfBirth) as Age  from tblEmployeeDateOfBirth
+
+
+---LECTURE 28 : CAST AND CONVERT FUNCTIONS ---
+
+Select * from tblEmployeeDateOfBirth
+
+Select Id, [Name], DateOfBirth, CAST(DateOfBirth as nvarchar(50)) as ConvertedDOB from tblEmployeeDateOfBirth
+Select Id, [Name], DateOfBirth, CONVERT(nvarchar, DateOfBirth) as ConvertedDOB from tblEmployeeDateOfBirth
+
+Select Id, [Name], DateOfBirth, Convert(nvarchar, DateOfBirth, 102) as ConvertedDOB from tblEmployeeDateOfBirth
+
+-- In convert funciton we can use different date_style as 3ed argument
+-- Style		DateFormat
+--101			mm/dd/yyyy
+--102			yy.mm.dd
+--103			dd/mm/yyyy
+--104			dd.mm.yy
+--105			dd-mm-yy
+
+-- for date and time styles LINK : https://www.mssqltips.com/sqlservertip/1145/date-and-time-conversions-using-sql-server/#:~:text=How%20to%20get%20SQL%20Date%20Format%20in%20SQL,to%20get%20a%20list%20of%20all%20format%20options
+
+Select * from tblEmp1
+
+Select ID, [Name], email, CONCAT([Name], '-',CAST(ID as nvarchar)) as [Name-ID] from tblEmp1
+
+
+Create table tblRegistration
+(
+	Id int primary key identity(1,1),
+	[Name] nvarchar(50) not null,
+	Email nvarchar(70) not null,
+	RegisteredDate datetime not null
+)
+
+Select GETDATE()
+
+Insert into tblRegistration values('John', 'j@j.com', '2024-08-18 17:14:44.443')
+Insert into tblRegistration values('Sam', 's@s.com', '2024-08-25 10:11:47.143')
+Insert into tblRegistration values('Todd', 't@t.com', '2024-08-18 23:15:41.421')
+Insert into tblRegistration values('Mary', 'm@m.com', '2024-08-25 11:04:24.224')
+Insert into tblRegistration values('Sunil', 's@s.com', '2024-08-25 15:02:21.321')
+Insert into tblRegistration values('Mike', 'mike@m.com', '2024-08-20 07:04:27.111')
+
+Truncate table tblRegistration
+
+Select * from tblRegistration
+
+Select CAST(RegisteredDate as DATE) as RegistrationDate, Count(Id) as TotalRegistration from tblRegistration group by CAST(RegisteredDate as DATE)
+Select CAST(RegisteredDate as TIME) as RegistrationDate, Count(Id) as TotalRegistration from tblRegistration group by CAST(RegisteredDate as TIME)
+
+Select RegisteredDate, Count(Id) as TotalRegistration from tblRegistration group by RegisteredDate
+
+
+
