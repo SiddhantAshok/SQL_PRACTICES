@@ -97,3 +97,32 @@ Select * from dbo.fnEmployeesByGender('Male')
 
 --Reason for improved performance of an inline table valued function : Internally, SQL Server treats an inline table valued function much like it would a view and treats a multi-statement table valued function similar to how it would a stored procedure.
 
+---LECTURE 33 : IMPORTANT CONVEPTS RELATED TO FUNCTIONS ---
+
+--Deterministic and Nondeterministic Functions:
+--Deterministic functions always return the same result any time they are called with a specific set of input values and given the same state of the database. 
+--Examples: Sum(), AVG(), Square(), Power() and Count()
+
+--Note: All aggregate functions are deterministic functions.
+
+--Nondeterministic functions may return different results each time they are called with a specific set of input values even if the database state that they access remains the same.
+--Examples: GetDate() and CURRENT_TIMESTAMP
+
+--Rand() function is a Non-deterministic function, but if you provide the seed value, the function becomes deterministic, as the same value gets returned for the same seed value.
+
+
+--Encrypting a function definiton using WITH ENCRYPTION OPTION:
+--We have learnt how to encrypt Stored procedure text using WITH ENCRYPTION OPTION in Part 18 of this video series. Along the same lines, you can also encrypt a function text. Once, encrypted, you cannot view the text of the function, using sp_helptext system stored procedure. If you try to, you will get a message stating 'The text for object is encrypted.' There are ways to decrypt, which is beyond the scope of this video.
+
+--WITH ENCRYPTION : nobody can look into the definition of the funciton [sp_helptext function_name] doesn't work.
+--WITH SCHEMABINDING : now the user cannot delete the underlying table and make changes to the used underlying schema.
+
+--Now, let's CREATE the function to use WITH ENCRYPTION OPTION and WIth SchemaBinding
+--Alter Function fn_GetEmployeeNameById(@Id int)
+--Returns nvarchar(20)
+--With Encryption
+--With SchemaBinding
+--as
+--Begin
+-- Return (Select Name from tblEmployees Where Id = @Id)
+--End
