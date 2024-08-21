@@ -126,3 +126,45 @@ Select * from dbo.fnEmployeesByGender('Male')
 --Begin
 -- Return (Select Name from tblEmployees Where Id = @Id)
 --End
+
+
+ ---LECTURE 34 : TEMPORARY TABLES ---
+
+ --Temporary table gets created TempDB and are automatically deleted, when they are no longer used.
+ --Local Temporary Table :
+ --A local temporary table is available, only for the connection that has created the table.
+ --A local temporary table is automatically dropped. When the connection that has created it , is closed.
+ --If the user wants to explicitly drop the temporary table, he can do so using DROP TABLE #PersonDetails
+
+ Create table #PersonDetails(
+ Id int,
+ [Name] nvarchar(20)
+ )
+
+ Insert into #PersonDetails values(1, 'Mike')
+ Insert into #PersonDetails values(2, 'John')
+ Insert into #PersonDetails values(3, 'Todd')
+
+ Select * from #PersonDetails
+
+ --Query the sysobjects system table in TEMPDB. The name of the table, is suffixed with lot of underscores and a random number. For this reason you have to use the LIKE operator in the query.
+ Select name from tempdb..sysobjects where name Like '#PersonDetails%'
+
+ --Select name from SampleDB..sysobjects where name Like 'tbl%'
+
+ Select * from #PersonDetails
+
+
+--If the temporary table, is created inside the stored procedure, it get's dropped automatically upon the completion of storred procedure execution.
+--It is also possible for different connections, to create a local temporary table with the same name. For ex: User1 and User2, both can create a local temporary table with the same name #PersonDetails.
+
+--Global Temporary Table : 
+--To create a Global Temporary table, prefix the name of the table with 2 pound(##) symbols
+Create table ##EmployeeDetails
+(
+	Id int,
+	[Name] nvarchar(20)
+)
+
+--Global temporary tables are visible to all the connections of the sql server, and are only destroyed when the last connection referencing the table is closed.
+--Multiple users, accross multiple connections can have local temporary tables with the same name, but a global table name has to be unique, and if you inspect the name of the global temp table, in the object explorer, there will be no random numbers suffixed at the end of the table name.
