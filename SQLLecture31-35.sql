@@ -168,3 +168,36 @@ Create table ##EmployeeDetails
 
 --Global temporary tables are visible to all the connections of the sql server, and are only destroyed when the last connection referencing the table is closed.
 --Multiple users, accross multiple connections can have local temporary tables with the same name, but a global table name has to be unique, and if you inspect the name of the global temp table, in the object explorer, there will be no random numbers suffixed at the end of the table name.
+
+---LECTURE 35 : INDEXES ---
+
+--Indexes are used by queries to find data from tables quickly. Indexes are created on tables and views. Index on a table or a view, is very similar to an index that we find in a book.
+
+SELECT * FROM tblEmployee
+
+Create table tblEmployeeSalary
+(
+	Id int,
+	[Name] nvarchar(50),
+	Salary int,
+	Gender nvarchar(10)
+)
+
+Select * from tblEmployeeSalary
+
+Insert into tblEmployeeSalary(Id, [Name], Salary, Gender) values (1,'Sam', 2500, 'Male')
+Insert into tblEmployeeSalary(Id, [Name], Salary, Gender) values (2,'Pam', 6500, 'Female')
+Insert into tblEmployeeSalary(Id, [Name], Salary, Gender) values (3,'John', 4500, 'Male')
+Insert into tblEmployeeSalary(Id, [Name], Salary, Gender) values (4,'Sara', 5500, 'Female')
+Insert into tblEmployeeSalary(Id, [Name], Salary, Gender) values (5,'Todd', 3100, 'Male')
+
+Select * from tblEmployeeSalary where Salary > 2500 and Salary < 5000
+
+--create index signature
+--CREATE INDEX IX_tableName_ColumnName On tableName (ColumnName ASCorDESC)
+
+Create Index IX_tblEmployeeSalary_Salary On tblEmployeeSalary (Salary ASC)
+
+sp_HelpIndex tblEmployeeSalary
+
+--Drop index tblEmployeeSalary.IX_tblEmployeeSalary_Salary
