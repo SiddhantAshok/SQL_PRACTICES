@@ -71,11 +71,13 @@ Create table [tblEmpDetails]
 
 sp_helpIndex tblEmpDetails
 
-Insert into tblEmpDetails Values(1, 'Mike', 'Sandoz', 4500, 'Male', 'New York')
-Insert into tblEmpDetails Values(1, 'Michael', 'Parcel', 5500, 'Male', 'New York')
+Insert into tblEmpDetails(Id,[FirstName],[LastName], Salary, Gender, City ) Values(1,'Mike', 'Sandoz', 4500, 'Male', 'New York')
+Insert into tblEmpDetails(Id,[FirstName],[LastName], Salary, Gender, City ) Values(2,'Michael', 'Parcel', 5500, 'Male', 'New Delhi')
+						  
+Insert into tblEmpDetails(Id,[FirstName],[LastName], Salary, Gender, City ) Values(3,'Spike', 'Saul', 6500, 'Male', 'Canada')
+Insert into tblEmpDetails(Id,[FirstName],[LastName], Salary, Gender, City ) Values(4,'Mikey', 'Mouse', 4500, 'Male', 'Brazile')
 
-Insert into tblEmpDetails Values(2, 'Spike', 'Saul', 6500, 'Male', 'New York')
-Insert into tblEmpDetails Values(3, 'Mikey', 'Mouse', 7500, 'Male', 'New York')
+Select * from tblEmpDetails
 
 --UNIQUE INDEX
 --Unique index is used to enforce uniqueness of key values in the index.
@@ -100,3 +102,21 @@ Alter table tblEmpDetails
 Add Constraint UQ_tblEmpDetails_City
 UNIQUE Clustered (City)
 
+---LECTURE 38 : ADVANTAGES AND DISADVANTAGES OF INDEXES ---
+
+--Advantages
+--As we have learnt that, indexes are used by queris to find the data quickly.
+
+Select * from tblEmpDetails
+
+Select Salary, Sum(Salary), Gender from tblEmpDetails Group By Salary, Gender
+
+--Indexes can help not even retrieval but also in Delete, Update, Order By and Group by queries
+
+--Disadvantages
+--ADDITIONAL DISK SPACE : Only in case of Non Clutered indexes.
+--INSERT UPDATE AND DELETE STATEMENT CAN BECOME SLOW : Incase of too many Non clustered Indexes the update,delete and insert statement will have to make changes in table and all the indexes as well which can slower the process.
+
+
+--WHAT IS COVERING QUERY : If all the columns that you have requested in the select clause of query, are present in the index, then there is no need to lookup in the table again. The requested columns data can simply be returned from the index.
+--A CLUSTERED INDEX, ALWAYS COVERS A QUERY, since it contains all of the data in a table. A composite index is an index on two or more columns. Both clustered and non-clustered indexes can be composite indexes. To a certain extent, a composite index, can cover a query.
