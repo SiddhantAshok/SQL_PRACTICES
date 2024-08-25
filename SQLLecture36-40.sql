@@ -55,6 +55,48 @@ Create NonClustered Index IX_tblEmpDetails_City on tblEmpDetials([City] DESC)
 --Differences
 --	1. ONLY ONE CLUSTERED INDEX per table, where as you can have more than one non clustered index
 --	2. CLUSTERED INDEX IS FASTER than a non clustered index, because, the clustered index has to refer back to the table, if the selected column is not present in the index.
---	3. CLUSTERED INDEX DETEREMINES THE STORAGE ORDER of rows in the table, and hence doesn't require additional disk spave, but where as a Non-Clustered index stored separately from the tabl, additional storage space is required.
+--	3. CLUSTERED INDEX DETEREMINES THE STORAGE ORDER of rows in the table, and hence doesn't require additional disk space, but where as a Non-Clustered index stored separately from the tabl, additional storage space is required.
 
+---LECTURE 37 : UNIQUE AND NON UNIQUE INDEXES ---
+
+Create table [tblEmpDetails]
+(
+	[Id] int Primary Key,
+	[FirstName] nvarchar(50),
+	[LastName] nvarchar(50),
+	[Salary] int,
+	[Gender] nvarchar(10),
+	[City] nvarchar(50)
+)
+
+sp_helpIndex tblEmpDetails
+
+Insert into tblEmpDetails Values(1, 'Mike', 'Sandoz', 4500, 'Male', 'New York')
+Insert into tblEmpDetails Values(1, 'Michael', 'Parcel', 5500, 'Male', 'New York')
+
+Insert into tblEmpDetails Values(2, 'Spike', 'Saul', 6500, 'Male', 'New York')
+Insert into tblEmpDetails Values(3, 'Mikey', 'Mouse', 7500, 'Male', 'New York')
+
+--UNIQUE INDEX
+--Unique index is used to enforce uniqueness of key values in the index.
+--NOTE : By default, PRIMARY KEY constraint, creates a unique clustered index.
+
+--UNIQUESNESS is a property of an index, and both clustered and non-clustered indexes can be UNIQUE.
+
+--CREATE UNIQUE NONCLUSTERED INDEX UIX_tblEmpDetails_FirstName_LastName On tblEmpDetails(FirstName ASC, LastName ASC)
+--CREATE NONCLUSTERED INDEX UIX_tblEmpDetails_Gender On tblEmpDetails(Gender ASC)
+--CREATE CLUSTERED INDEX IX_tblEmpDetails_Salary on tblEmpDetails(Salary ASC)
+
+--DIFFERENCE BETWEEN UNIQUE CONSTRAINT AND UNIQUE INDEX
+--There are no major differeces between a unique constraint and unique index. In fact when you add a unique constraint, a unique index gets created behind the scenes.
+
+
+Alter table tblEmpDetails
+Add Constraint UQ_tblEmpDetails_City
+UNIQUE (City)
+
+--Or
+Alter table tblEmpDetails
+Add Constraint UQ_tblEmpDetails_City
+UNIQUE Clustered (City)
 
