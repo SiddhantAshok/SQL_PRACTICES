@@ -122,6 +122,8 @@ Select Salary, Sum(Salary), Gender from tblEmpDetails Group By Salary, Gender
 --A CLUSTERED INDEX, ALWAYS COVERS A QUERY, since it contains all of the data in a table. A composite index is an index on two or more columns. Both clustered and non-clustered indexes can be composite indexes. To a certain extent, a composite index, can cover a query.
 
 
+<<<<<<< HEAD
+=======
 ---LECTURE 39 : VIEWS ---
 
 --A view is nothing more than a saved SQL query. A view can also be considered as a virtual table.
@@ -196,3 +198,4 @@ Select * from vWSummarizedData
 
 
 
+>>>>>>> main
