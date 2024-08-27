@@ -122,3 +122,80 @@ Select Salary, Sum(Salary), Gender from tblEmpDetails Group By Salary, Gender
 --A CLUSTERED INDEX, ALWAYS COVERS A QUERY, since it contains all of the data in a table. A composite index is an index on two or more columns. Both clustered and non-clustered indexes can be composite indexes. To a certain extent, a composite index, can cover a query.
 
 
+<<<<<<< HEAD
+=======
+---LECTURE 39 : VIEWS ---
+
+--A view is nothing more than a saved SQL query. A view can also be considered as a virtual table.
+
+--SQL Script to create tblEmployee table:
+CREATE TABLE tblEmpInfo
+(
+  Id int Primary Key,
+  Name nvarchar(30),
+  Salary int,
+  Gender nvarchar(10),
+  DepartmentId int
+)
+
+--SQL Script to create tblDepartment table: 
+CREATE TABLE tblEmpDept
+(
+ DeptId int Primary Key,
+ DeptName nvarchar(20)
+)
+
+--Insert data into tblDepartment table
+Insert into tblEmpDept values (1,'IT')
+Insert into tblEmpDept values (2,'Payroll')
+Insert into tblEmpDept values (3,'HR')
+Insert into tblEmpDept values (4,'Admin')
+
+--Insert data into tblEmployee table
+Insert into tblEmpInfo values (1,'John', 5000, 'Male', 3)
+Insert into tblEmpInfo values (2,'Mike', 3400, 'Male', 2)
+Insert into tblEmpInfo values (3,'Pam', 6000, 'Female', 1)
+Insert into tblEmpInfo values (4,'Todd', 4800, 'Male', 4)
+Insert into tblEmpInfo values (5,'Sara', 3200, 'Female', 1)
+Insert into tblEmpInfo values (6,'Ben', 4800, 'Male', 3)
+
+
+Select [Name], Salary, Gender, DeptName from tblEmpInfo inner join tblEmpDept on tblEmpDept.DeptId = tblEmpInfo.DepartmentId
+
+Create View vWEmployeesByDept
+As 
+Select [Name], Salary, Gender, DeptName from tblEmpInfo inner join tblEmpDept on tblEmpDept.DeptId = tblEmpInfo.DepartmentId
+
+Select * from vWEmployeesByDept
+
+sp_helptext vWEmployeesByDept
+
+--Advantages of using a View
+--	1. Views can be used to reduce the complexity of the database schema
+--	2. Views can be used as a mechanism to implement row and column level security
+--	3. Views can be used to present aggregated data and hide detailed data.
+
+--Row level security [Shows only the IT employees data]
+Create View vWITEmployees
+As 
+Select [Name], Salary, Gender, DeptName from tblEmpInfo inner join tblEmpDept on tblEmpDept.DeptId = tblEmpInfo.DepartmentId where tblEmpDept.DeptName = 'IT'
+
+Select * from vWITEmployees
+
+--Column level security [Shows only the general info, hides away the confidential information like Salary]
+Create View vWNonConfidentialDataEmployees
+As 
+Select [Name], Gender, DeptName from tblEmpInfo inner join tblEmpDept on tblEmpDept.DeptId = tblEmpInfo.DepartmentId
+
+Select * from vWNonConfidentialDataEmployees
+
+--Aggregated Data
+Create View vWSummarizedData
+As
+Select D.DeptName, Count(E.Id) as [Employee Count] from tblEmpInfo as E inner join tblEmpDept as D on D.DeptId = E.DepartmentId Group by D.DeptName
+
+Select * from vWSummarizedData
+
+
+
+>>>>>>> main
