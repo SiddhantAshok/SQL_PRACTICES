@@ -120,3 +120,5 @@ Select Salary, Sum(Salary), Gender from tblEmpDetails Group By Salary, Gender
 
 --WHAT IS COVERING QUERY : If all the columns that you have requested in the select clause of query, are present in the index, then there is no need to lookup in the table again. The requested columns data can simply be returned from the index.
 --A CLUSTERED INDEX, ALWAYS COVERS A QUERY, since it contains all of the data in a table. A composite index is an index on two or more columns. Both clustered and non-clustered indexes can be composite indexes. To a certain extent, a composite index, can cover a query.
+
+
