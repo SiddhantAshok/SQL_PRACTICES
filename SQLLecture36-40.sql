@@ -199,3 +199,55 @@ Select * from vWSummarizedData
 
 
 >>>>>>> main
+
+---LECTURE 40 : UPDATETABLE VIEWS ---
+Create Table tblEmpInformation
+(
+	[Id] int primary key,
+	[Name] nvarchar(30),
+	[Salary] int,
+	[Gender] nvarchar(10),
+	DepartmentId int
+)
+
+Insert into tblEmpInformation values(1,'John', 5000, 'Male',3)
+Insert into tblEmpInformation values(2,'Mike', 3400, 'Male',2)
+Insert into tblEmpInformation values(3,'Pam', 6000, 'Female',1)
+Insert into tblEmpInformation values(4,'Todd', 4800, 'Male',4)
+Insert into tblEmpInformation values(5,'Sara', 3200, 'Female',1)
+Insert into tblEmpInformation values(6,'Ben', 4800, 'Male',3)
+
+create view vWtblEmpInformationDataExceptSalary
+as
+Select Id,[Name], Gender, DepartmentId from tblEmpInformation
+
+Select * from vWtblEmpInformationDataExceptSalary
+Select * from tblEmpInformation
+
+--Is it possible to Insert, Update and delete rows, from the underlying tblEmployees table, using view vWEmployeesDataExceptSalary?
+--Yes, SQL server views are updateable.
+
+--below query updates the underlying table using the View
+update vWtblEmpInformationDataExceptSalary set [Name] = 'Mikey' where Id = 2
+
+--Along the same lines, it is also possible to insert and delete rows from the base table using views.
+Delete vWtblEmpInformationDataExceptSalary where Id = 6
+Insert into vWtblEmpInformationDataExceptSalary values(7,'Ben', 'Male',3)	--cannot update Salary column because Salary column is not listed in View
+
+
+--Create a view which joins tblEmployee and tblDepartment tables, 
+Select * from tblEmpInformation
+Select * from tblDepartment
+
+Create View vWtblEmpDetailsByDepartment
+As
+Select E.Id, E.Name, E.Salary, E.Gender, D.DepartmentName from tblEmpInformation E join tblDepartment D
+on D.Id = E.DepartmentId
+
+Select * from  vWtblEmpDetailsByDepartment
+
+Update vWtblEmpDetailsByDepartment set DepartmentName = 'IT' where Id = 1
+
+--The UPDATE statement, updated DeptName from HR to IT in tblDepartment table, instead of upadting DepartmentId column in tblEmployee table.
+--So, the conclusion - If a view is based on multiple tables, and if you update the view, it may not update the underlying base tables correctly. 
+--To correctly update a view, that is based on multiple table, INSTEAD OF triggers are used.
