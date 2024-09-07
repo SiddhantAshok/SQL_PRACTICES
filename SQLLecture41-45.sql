@@ -1,4 +1,4 @@
-
+---LECTURE 41 : INDEXED VIEWS ---
 Use SampleDB
 Go
 
@@ -70,3 +70,34 @@ create Unique Clustered Index UIX_vWTotalSalesByProduct_Name on vWTotalSalesByPr
 --Indexed views, can significantly improve the performance of queries that involves JOINS and Aggeregations. The cost of maintaining an indexed view is much higher than the cost of maintaining a table index.
 
 --Indexed views are ideal for scenarios, where the underlying data is not frequently changed. Indexed views are more often used in OLAP systems, because the data is mainly used for reporting and analysis purposes. Indexed views, may not be suitable for OLTP systems, as the data is frequently addedd and changed.
+
+
+---LECTURE 42 : VIEW LIMITATIONS ---
+
+--	1. You cannot pass parameters to a view. Table valued functions are an excellent replacement for parameterized views.
+--		You can also use Where clause with the View.
+
+--	2. Rules and Defaults cannot be associated with the views.
+
+
+--	3. The ORDER BY clause is invalid in views unless TOP or FOR XML is also specified.
+
+--	4. View cannot be based on temporary tables.
+
+Create Table ##TestTempTable
+(
+	[Id] int,
+	[Name] nvarchar(20),
+	[Gender] nvarchar(10)
+)
+
+Insert into ##TestTempTable values (101, 'Martin', 'Male')
+Insert into ##TestTempTable values (102, 'Joe', 'Female')
+Insert into ##TestTempTable values (103, 'Pam', 'Female')
+Insert into ##TestTempTable values (104, 'James', 'Male')
+
+Create View vWOnTempTable
+as
+Select Id, Name, Gender from ##TestTempTable
+
+
