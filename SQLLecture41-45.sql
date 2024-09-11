@@ -265,3 +265,74 @@ Select * from tblEmployee
 Select * from tblEmployeeAudit
 
 Update tblEmployee set [Name] = 'Dwyane', Salary = 8700 where Id = 105
+
+---LECTURE 45 : INSTEAD OF INSERT TRIGGER ---
+
+USE SampleDB
+Go
+
+Select * from tblEmployeeAudit
+Select * from tblEmployee
+Select * from tblDepartment
+
+--sp_help tblEmployee
+
+Create View vWEmployeeDetails
+As
+Select tblEmployee.Id, [Name], Gender, DepartmentName from tblEmployee join tblDepartment on tblDepartment.Id = tblEmployee.DepartmentId
+
+select * from vWEmployeeDetails
+
+--Insert into tblEmployee values('Valarie', 'Female', 5000, 'New York', 2)
+
+
+Insert into vWEmployeeDetails values (1107,'Pearson', 'Female', 'HR')
+--Above query throws the below error
+--Msg 4405, Level 16, State 1, Line 287
+--View or function 'vWEmployeeDetails' is not updatable because the modification affects multiple base tables.
+
+--In solution of above error we can create an Instead of insert Trigger on View Itself
+Create Trigger tr_vWEmployeeDetails_InsteadOfInsert
+On vWEmployeeDetails
+Instead Of Insert
+As
+Begin
+	Select * from inserted
+	Select * from deleted
+End
+
+----
+Alter Trigger tr_vWEmployeeDetails_InsteadOfInsert
+On vWEmployeeDetails
+Instead Of Insert
+As
+Begin
+
+	Declare @DeptId int
+
+	--Check if there is any valid DepartmentId for the given DepartmentName
+	Select @DeptId = tblDepartment.Id from tblDepartment join inserted on inserted.DepartmentName = tblDepartment.DepartmentName
+
+	--If DepatmentId is null throw an error and stop processing
+	If(@DeptId is null)
+	Begin
+		Raiserror('Invalid Department Name. Statement terminated', 16, 1)
+		return
+	End
+	
+	Declare @Sal int = 1000
+	Declare @cit nvarchar(50) = 'New York'
+
+	--Finally insert into tblEmployee table
+	Insert into tblEmployee(Id, [Name], Gender, Salary, City, DepartmentId)
+	Select Id, [Name], Gender, @Sal, @cit, @DeptId from inserted
+End
+
+Insert into vWEmployeeDetails values (1107,'Pearson', 'Female', 'HRI')
+--Getting expected error mentioned in Trigger that states : Invalid Department Name. Statement terminated
+
+SET Identity_Insert tblEmployee ON
+
+select * from tblEmployee
+Insert into vWEmployeeDetails values (1107,'Pearson', 'Female', 'HR')
+Select * from vWEmployeeDetails
