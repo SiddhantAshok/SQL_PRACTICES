@@ -255,3 +255,76 @@ End
 --Instead of Insert		-	DELETED table is always empty and the INSERTED table contains the newly inserted data.
 --Instead of Delete		-	INSERTED table is always empty and the DELETED table contains the rows deleted
 --Instead of Update		-	DELETED table contains OLD data (before update), and inserted table contains NEW data(Updated data)
+
+
+---LECTURE 48 : DERIVED TABLES AND COMMON TABLE EXPRESSIONS ---
+
+Select * from tblEmployee
+Select * from tblDepartment
+
+Select D.DepartmentName, Count(E.ID) as TotalEmployees from tblEmployee as E join tblDepartment as D on D.Id = E.DepartmentId Group By D.DepartmentName
+
+Create View vWEmployeeCount
+As
+Select D.DepartmentName, E.DepartmentId, Count(E.ID) as TotalEmployees from tblEmployee as E join tblDepartment as D on D.Id = E.DepartmentId Group By D.DepartmentName, E.DepartmentId
+
+Select DepartmentName, TotalEmployees from vWEmployeeCount where TotalEmployees >= 2
+
+--Note : Views get saved in the database, and can be available to other queries and stored procedures. However, if this view is only used at this one place, it can be easily eliminated using other options, like CTE, Derived Tables, Temp Tables,Table Variables etc.
+
+--Use Temp Tables --
+
+Select D.DepartmentName, E.DepartmentId, Count(E.Id) as TotalEmployees 
+into #TempEmployeeCount 
+from tblEmployee as E 
+join tblDepartment as D 
+on D.Id = E.DepartmentId 
+group by D.DepartmentName, E.DepartmentId
+
+Select DepartmentName, TotalEmployees from #TempEmployeeCount where TotalEmployees > = 2
+
+Drop Table #TempEmployeeCount
+
+--Note : Temporary tables are stored in TempDB. Local temporary tables are visible only in the current session, and can be shared between nested stored procedure calls. Global temporary tables are visible to other sessions and are destroyed , when the last connection referencing the table is closed.
+
+--Now Using Table Variable --
+Declare @tblEmployeeCount table (DepartmentName nvarchar(20), DepartmentId int, TotalEmployees int)
+
+Insert @tblEmployeeCount
+Select D.DepartmentName, E.DepartmentId, Count(E.ID) as TotalEmployees 
+from tblEmployee as E join tblDepartment as D
+on D.Id = E.DepartmentId
+Group by DepartmentName, DepartmentId
+
+Select DepartmentName, TotalEmployees from @tblEmployeeCount where TotalEmployees >=2
+
+--Note : Just like TempTables, a Table variable is also vreated in TempDB. The scope of a table variables is the batch, stored procedure, or statement block in which it is declared. They can be passed as parameters between procedures.
+
+--Using Derived Tables --
+
+Select DepartmentName, TotalEmployees 
+from
+	(	
+		Select D.DepartmentName, E.DepartmentId, Count(E.ID) as TotalEmployees
+		from tblEmployee as E join tblDepartment as D 
+		on D.Id = E.DepartmentId 
+		Group By D.DepartmentName, E.DepartmentId
+	)
+as EmployeeCount
+where TotalEmployees >= 2
+
+--EmployeeCount is the derived table
+--Note: Derived tables are available only in the context of the current query.
+
+--Now we will use CTE --
+
+With EmployeeCount(DepartmentName, DepartmentId, TotalEmployees)
+as
+	(
+		Select D.DepartmentName, E.DepartmentId, Count(E.ID) as TotalEmployees
+		from tblEmployee as E join tblDepartment as D 
+		on D.Id = E.DepartmentId 
+		Group By D.DepartmentName, E.DepartmentId
+	)
+
+Select DepartmentName, TotalEmployees from EmployeeCount where TotalEmployees >= 2
