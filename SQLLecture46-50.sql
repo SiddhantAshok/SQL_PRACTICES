@@ -220,3 +220,38 @@ Begin
 	End
 
 End
+
+
+---LECTURE 47 : INSTEAD OF DELETE TRIGGER ---
+
+Select * from tblEmployee
+Select * from tblDepartment
+
+sp_helptext tr_tblEmployee_ForDelete
+
+Select * from tblEmployeeAudit
+
+Select * from vWEmployeeDetails
+
+Delete from vWEmployeeDetails where Id = 108
+--Above query throws below error
+--Msg 4405, Level 16, State 1, Line 236
+--View or function 'vWEmployeeDetails' is not updatable because the modification affects multiple base tables.
+
+
+--In place of the delete query we must write a trigger to delete the tuple from the base table
+Create Trigger tr_vWEmployeeDetails_InsteadOfDelete
+On vWEmployeeDetails
+Instead Of Delete
+As
+Begin
+	
+	Delete tblEmployee from tblEmployee join deleted on deleted.Id = tblEmployee.Id
+
+End
+
+
+--Trigger						INSERTED or DELETED?
+--Instead of Insert		-	DELETED table is always empty and the INSERTED table contains the newly inserted data.
+--Instead of Delete		-	INSERTED table is always empty and the DELETED table contains the rows deleted
+--Instead of Update		-	DELETED table contains OLD data (before update), and inserted table contains NEW data(Updated data)
