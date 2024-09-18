@@ -328,3 +328,27 @@ as
 	)
 
 Select DepartmentName, TotalEmployees from EmployeeCount where TotalEmployees >= 2
+
+
+--- LECTURE 49 : CTE ---
+
+--Common Table Expressio(CTE) is introduced in SQL Server 2005. A CTE is a temporary result set, that can be referenced within a SELECT, INSERT, UPDATE or DELETE statement, that immediately follows the CTE.
+
+--CTE SYNTEX below
+--WITH CTE_Name (Column1, Column2, ...)
+--AS 
+--( CTE_Query)
+
+Use SampleDB
+Go
+
+Select * from tblEmployee
+Select * from tblDepartment
+
+WITH EmployeeCount (DepartmentID, TotalEmployees)
+As
+(
+	Select E.DepartmentId, Count(E.Id) as TotalEmployees from tblEmployee as E join tblDepartment as D on D.Id = E.DepartmentId Group by E.DepartmentId, D.DepartmentName
+)
+
+Select DepartmentName, TotalEmployees from tblDepartment as D join EmployeeCount on D.Id = EmployeeCount.DepartmentID Order by TotalEmployees
