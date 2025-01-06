@@ -59,6 +59,7 @@ Insert into tblPerson (ID, Name, Email, GenderId) Values (1, 'John', 'john@com',
 Insert into tblPerson (ID, Name, Email) Values (2, 'Johny', 'johny@com')
 Insert into tblPerson (ID, Name, Email, GenderId) Values (3, 'Sara', 'sara@com', 2)
 Insert into tblPerson (ID, Name, Email, GenderId) Values (4, 'Mike', 'mike@com', NULL)
+Insert into tblPerson (ID, Name, Email, GenderId) Values (5, 'Neymar', 'neymar@com', 1)
 
 --Add default value constraint for the column in table
 Alter table tblPerson 
